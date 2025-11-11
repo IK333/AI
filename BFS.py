@@ -1,5 +1,4 @@
 import networkx as nx
-import matplotlib.pyplot as plt
 from collections import deque
 
 # --- Input the graph ---
@@ -42,16 +41,3 @@ if found_path:
     print("Path found:", " -> ".join(found_path))
 else:
     print("No path found.")
-
-# --- Draw the graph and highlight the found path ---
-pos = nx.spring_layout(G)  # layout for positioning
-nx.draw(G, pos, with_labels=True, node_color='lightblue', node_size=800, font_size=10, width=2)
-
-if found_path:
-    # Highlight the found path in red
-    path_edges = list(zip(found_path, found_path[1:]))
-    nx.draw_networkx_nodes(G, pos, nodelist=found_path, node_color='orange', node_size=900)
-    nx.draw_networkx_edges(G, pos, edgelist=path_edges, edge_color='red', width=3)
-
-plt.title("BFS Traversal and Found Path")
-plt.show()

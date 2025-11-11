@@ -1,5 +1,4 @@
 import networkx as nx
-import matplotlib.pyplot as plt
 import heapq
 
 # --- Input graph edges ---
@@ -55,28 +54,3 @@ if found_path:
     print("\nPath found (Greedy Best First Search):", " -> ".join(found_path))
 else:
     print("\nNo path found.")
-
-# --- Draw graph and highlight the path ---
-pos = nx.spring_layout(G)
-labels = nx.get_edge_attributes(G, 'weight')  # {(u,v): weight, ...}
-
-nx.draw(G, pos, with_labels=True, node_color='lightblue', node_size=800, font_size=10)
-nx.draw_networkx_edges(G, pos, width=2)
-
-# --- Draw edge labels manually at midpoints, shifted upward so they don't get hidden by the red path ---
-for (u, v), w in labels.items():
-    x_mid = (pos[u][0] + pos[v][0]) / 2
-    y_mid = (pos[u][1] + pos[v][1]) / 2
-    # shift upward; tune the offset (0.03) if you need more/less separation
-    plt.text(x_mid, y_mid + 0.03, str(w), fontsize=9,
-             horizontalalignment='center', verticalalignment='center',
-             bbox=dict(facecolor='white', edgecolor='none', alpha=0.8))
-
-if found_path:
-    path_edges = list(zip(found_path, found_path[1:]))
-    nx.draw_networkx_nodes(G, pos, nodelist=found_path, node_color='orange', node_size=900)
-    nx.draw_networkx_edges(G, pos, edgelist=path_edges, edge_color='red', width=3)
-
-plt.title("Greedy Best First Search (f(n) = h(n)) with g(n) Above Edges")
-plt.axis('off')
-plt.show()

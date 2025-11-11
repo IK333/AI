@@ -1,5 +1,4 @@
 import networkx as nx
-import matplotlib.pyplot as plt
 import heapq
 
 # --- Input graph edges ---
@@ -62,44 +61,3 @@ if found_path:
     print("Total path cost (g):", total_cost)
 else:
     print("\nNo path found.")
-    total_cost = None
-
-# --- Draw the graph ---
-pos = nx.spring_layout(G)
-edge_labels = nx.get_edge_attributes(G, 'weight')
-
-nx.draw(G, pos, with_labels=True, node_color='lightblue', node_size=800, font_size=10)
-nx.draw_networkx_edges(G, pos, width=2)
-
-# --- Edge weight labels ---
-for (u, v), w in edge_labels.items():
-    x_mid = (pos[u][0] + pos[v][0]) / 2
-    y_mid = (pos[u][1] + pos[v][1]) / 2
-    plt.text(x_mid, y_mid + 0.04, str(w), fontsize=9,
-             horizontalalignment='center', verticalalignment='center',
-             bbox=dict(facecolor='white', edgecolor='none', alpha=0.8))
-
-# --- Highlight found path ---
-if found_path:
-    path_edges = list(zip(found_path, found_path[1:]))
-    nx.draw_networkx_nodes(G, pos, nodelist=found_path, node_color='orange', node_size=900)
-    nx.draw_networkx_edges(G, pos, edgelist=path_edges, edge_color='red', width=3)
-
-# --- Show (g,h,f) for every node ---
-for n in G.nodes():
-    g_val = g_cost.get(n, float('inf'))
-    h_val = heuristic.get(n, float('inf'))
-    f_val = g_val + h_val if g_val != float('inf') and h_val != float('inf') else float('inf')
-
-    g_text = "∞" if g_val == float('inf') else f"{g_val}"
-    h_text = "∞" if h_val == float('inf') else f"{h_val}"
-    f_text = "∞" if f_val == float('inf') else f"{f_val}"
-
-    x, y = pos[n]
-    plt.text(x, y - 0.08, f"g={g_text}, h={h_text}, f={f_text}", fontsize=9,
-             horizontalalignment='center',
-             bbox=dict(facecolor='white', alpha=0.7, edgecolor='none'))
-
-plt.title("A* Search (f = g + h)")
-plt.axis('off')
-plt.show()
